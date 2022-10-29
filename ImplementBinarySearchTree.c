@@ -13,26 +13,17 @@ void main()
         scanf("%d", array + i);
     }
 
-    /*
-        *** something written just to see if the binary tree
-        *** print function is working properly or not!
-
-        *
-
-        BinaryTreeNode BST = createBinaryTreeNode(10);
-        BST->left = createBinaryTreeNode(4);
-        BST->left->left = createBinaryTreeNode(3);
-        BST->left->right = createBinaryTreeNode(5);
-
-        BST->right = createBinaryTreeNode(15);
-        BST->right->left = createBinaryTreeNode(13);
-        BST->right->right = createBinaryTreeNode(16);
-
-        */
-
     printf("The BST is: ");
 
     BinaryTreeNode BST = createBinaryTreeFromArray(array, n);
+
+    printBinaryTree(BST);
+
+    printf("\n\n%d is the min and %d is the max\n", findMinimumInBST(BST)->value, findMaximumInBST(BST)->value);
+    printf("\n%d is the successor of %d\n\n\n", findSuccessorInBST(findElementInBinaryTree(BST, 4))->value, 4);
+
+    printBinaryTree(BST);
+    printf("\n");
 
     printBinaryTree(BST);
 }
