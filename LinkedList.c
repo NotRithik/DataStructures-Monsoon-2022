@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 // Create LinkedList structure
 struct LinkedList
@@ -14,31 +15,16 @@ void addNodeNext(int, Node *);
 void delNextNode(Node *);
 Node *createLinkedList(int *, int);
 Node *reverseLinkedList(Node *);
+Node *chunkReverseLinkedList(Node *, int, int);
+Node *reverseChunk(Node *, int);
+Node *findElementN(Node *, int);
 
 void main()
 {
-    // Node *nodeA = malloc(sizeof(Node)); // First element in LinkedList
-    // nodeA->value = 13;
-
-    // nodeA->next = malloc(sizeof(Node)); // Second element in LinkedList
-    // nodeA->next->value = 69;
-
-    // nodeA->next->next = NULL; // Make second element's 'next' pointer point to NULL so we know it is the end
-
-    // addNodeNext(20, nodeA);
-    // addNodeNext(20, nodeA->next);
-    // delNextNode(nodeA);
-
-    // while (nodeA != NULL)
-    // {
-    //     printf("%d\n", nodeA->value);
-    //     nodeA = nodeA->next;
-    // }
-
-    int n = 2, something[n];
+    int n = 10, something[n];
     for (int i = 0; i < n; i++)
     {
-        something[i] = i + 1;
+        something[i] = i;
     }
 
     Node *somethingLinkedList = createLinkedList(something, n);
@@ -51,7 +37,16 @@ void main()
 
     somethingLinkedList = head;
 
-    somethingLinkedList = reverseLinkedList(somethingLinkedList);
+    // somethingLinkedList = reverseLinkedList(somethingLinkedList);
+    // while (somethingLinkedList != NULL)
+    // {
+    //     printf("%d, ", somethingLinkedList->value);
+    //     somethingLinkedList = somethingLinkedList->next;
+    // }
+
+    printf("\n");
+
+    somethingLinkedList = reverseChunk(somethingLinkedList, 5);
     while (somethingLinkedList != NULL)
     {
         printf("%d, ", somethingLinkedList->value);
@@ -117,7 +112,8 @@ Node *reverseLinkedList(Node *list)
         return list;
     }
 
-    if (list->next->next == NULL) { // If 2 elements
+    if (list->next->next == NULL)
+    { // If 2 elements
         Node *temp = list->next;
         list->next->next = list;
         list->next = NULL;
@@ -141,4 +137,103 @@ Node *reverseLinkedList(Node *list)
     }
 
     return current;
+}
+
+Node *chunkReverseLinkedList(Node *list, int chunkSize, int listSize)
+{
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    int index;
+
+    Node *chunkHead = list, *oldChunkTail = list;
+    Node *newHead = findElementN(list, chunkSize);
+
+    // Check if there are chunkSize number of elements in the list or not
+    Node *tempNode = list;
+    bool flag = 1;
+
+    int iteration = 0;
+
+    while (flag)
+    {
+        for (int i = 0; i < chunkSize; i++)
+        {
+            if (tempNode != NULL)
+            {
+                tempNode = tempNode->next;
+            }
+            else
+            {
+                // set flag
+                flag = 0;
+            }
+        }
+
+        tempNode = tempNode->next;
+
+        // If no, just reverse the entire list. If yes, then reverse a chunk then
+        if (!flag)
+        {
+            chunkHead = reverseLinkedList(oldChunkTail->next);
+            oldChunkTail->next = chunkHead;
+        }
+        else
+        {
+            Node *temp = chunkHead;
+            chunkHead = reverseChunk(oldChunkTail->next, chunkSize);
+            oldChunkTail->next = tempNode;
+            oldChunkTail = temp;
+        }
+    }
+    // Keep reversing list
+
+    return newHead;
+}
+
+Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new head
+{
+    Node *oldHead = list;
+
+    Node *secPrev = list;
+    Node *prev = list->next;
+    Node *current = list->next->next;
+
+    secPrev->next = NULL;
+
+    int i = 0;
+
+    while (i < chunkSize - 1)
+    {
+        prev->next = secPrev;
+
+        secPrev = prev;
+        prev = current;
+
+        current = current->next;
+
+        i++;
+    }
+
+    oldHead->next = prev;
+
+    return secPrev;
+}
+
+Node *findElementN(Node *list, int n)
+{
+
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    for (int i = 0; i < n && list->next != NULL; i++)
+    {
+        list = list->next;
+    }
+
+    return list;
 }
