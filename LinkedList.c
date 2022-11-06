@@ -1,5 +1,12 @@
 #include "./LinkedList.h"
 
+void swapNodes(Node nodeA, Node nodeB)
+{
+    int temp = nodeA->value;
+    nodeA->value = nodeB->value;
+    nodeB->value = temp;
+}
+
 void addNodeNext(int value, Node node)
 {
     if (node->next != NULL)
@@ -24,7 +31,7 @@ void delNextNode(Node node)
     node->next = temp;
 }
 
-Node createLinkedList(int* array, int size)
+Node createLinkedList(int *array, int size)
 {
     if (size <= 0)
     {
