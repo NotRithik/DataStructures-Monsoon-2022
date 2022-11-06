@@ -15,13 +15,13 @@ void addNodeNext(int, Node *);
 void delNextNode(Node *);
 Node *createLinkedList(int *, int);
 Node *reverseLinkedList(Node *);
-Node *chunkReverseLinkedList(Node *, int, int);
+Node *chunkReverseLinkedList(Node *, int);
 Node *reverseChunk(Node *, int);
 Node *findElementN(Node *, int);
 
 void main()
 {
-    int n = 10, something[n];
+    int n = 23, something[n];
     for (int i = 0; i < n; i++)
     {
         something[i] = i;
@@ -36,17 +36,11 @@ void main()
     }
 
     somethingLinkedList = head;
-
-    // somethingLinkedList = reverseLinkedList(somethingLinkedList);
-    // while (somethingLinkedList != NULL)
-    // {
-    //     printf("%d, ", somethingLinkedList->value);
-    //     somethingLinkedList = somethingLinkedList->next;
-    // }
-
     printf("\n");
 
-    somethingLinkedList = reverseChunk(somethingLinkedList, 5);
+    // somethingLinkedList = reverseLinkedList(somethingLinkedList);
+
+    somethingLinkedList = chunkReverseLinkedList(somethingLinkedList, 5);
     while (somethingLinkedList != NULL)
     {
         printf("%d, ", somethingLinkedList->value);
@@ -136,65 +130,55 @@ Node *reverseLinkedList(Node *list)
         current = current->next;
     }
 
-    return current;
+    prev->next = secPrev;
+
+    secPrev = prev;
+
+    return secPrev;
 }
 
-Node *chunkReverseLinkedList(Node *list, int chunkSize, int listSize)
+Node *chunkReverseLinkedList(Node *list, int chunkSize)
 {
-    if (list == NULL)
+    Node *lastElementOfCurrentChunk = findElementN(list, chunkSize - 1);
+
+    if (lastElementOfCurrentChunk == NULL) // If list has less than chunkSize number of elements left
     {
-        return NULL;
+        return reverseLinkedList(list);
     }
 
-    int index;
+    Node *firstElementOfNextChunk = lastElementOfCurrentChunk->next;
 
-    Node *chunkHead = list, *oldChunkTail = list;
-    Node *newHead = findElementN(list, chunkSize);
+    Node *tailOfCurrentChunk = list;
+    Node *headOfCurrentChunk = reverseChunk(list, chunkSize);
 
-    // Check if there are chunkSize number of elements in the list or not
-    Node *tempNode = list;
-    bool flag = 1;
-
-    int iteration = 0;
-
-    while (flag)
+    if (firstElementOfNextChunk == NULL)
     {
-        for (int i = 0; i < chunkSize; i++)
-        {
-            if (tempNode != NULL)
-            {
-                tempNode = tempNode->next;
-            }
-            else
-            {
-                // set flag
-                flag = 0;
-            }
-        }
-
-        tempNode = tempNode->next;
-
-        // If no, just reverse the entire list. If yes, then reverse a chunk then
-        if (!flag)
-        {
-            chunkHead = reverseLinkedList(oldChunkTail->next);
-            oldChunkTail->next = chunkHead;
-        }
-        else
-        {
-            Node *temp = chunkHead;
-            chunkHead = reverseChunk(oldChunkTail->next, chunkSize);
-            oldChunkTail->next = tempNode;
-            oldChunkTail = temp;
-        }
+        tailOfCurrentChunk->next == NULL;
     }
-    // Keep reversing list
+    else
+    {
+        tailOfCurrentChunk->next = chunkReverseLinkedList(firstElementOfNextChunk, chunkSize);
+    }
 
-    return newHead;
+    return headOfCurrentChunk;
 }
 
 Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new head
 {
+    // If there are less than or equal to chunkSize number of elements in the list, just reverse the list
+    Node *checkerNode = list;
+    int i = 0;
+    while (i <= chunkSize)
+    {
+        if (checkerNode == NULL)
+        {
+            return reverseLinkedList(list);
+        }
+
+        checkerNode = checkerNode->next;
+        i++;
+    }
+
     Node *oldHead = list;
 
     Node *secPrev = list;
@@ -203,10 +187,11 @@ Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new he
 
     secPrev->next = NULL;
 
-    int i = 0;
+    i = 0;
 
     while (i < chunkSize - 1)
     {
+
         prev->next = secPrev;
 
         secPrev = prev;
@@ -230,8 +215,10 @@ Node *findElementN(Node *list, int n)
         return NULL;
     }
 
-    for (int i = 0; i < n && list->next != NULL; i++)
+    for (int i = 0; i < n; i++)
     {
+        if (list == NULL)
+            return NULL;
         list = list->next;
     }
 
