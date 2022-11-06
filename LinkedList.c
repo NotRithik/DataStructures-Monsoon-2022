@@ -1,58 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "./LinkedList.h"
 
-// Create LinkedList structure
-struct LinkedList
-{
-    int value;
-    struct LinkedList *next;
-};
-
-typedef struct LinkedList Node; // Define type Node
-
-void addNodeNext(int, Node *);
-void delNextNode(Node *);
-Node *createLinkedList(int *, int);
-Node *reverseLinkedList(Node *);
-Node *chunkReverseLinkedList(Node *, int);
-Node *reverseChunk(Node *, int);
-Node *findElementN(Node *, int);
-
-void main()
-{
-    int n = 23, something[n];
-    for (int i = 0; i < n; i++)
-    {
-        something[i] = i;
-    }
-
-    Node *somethingLinkedList = createLinkedList(something, n);
-    Node *head = somethingLinkedList;
-    while (somethingLinkedList != NULL)
-    {
-        printf("%d, ", somethingLinkedList->value);
-        somethingLinkedList = somethingLinkedList->next;
-    }
-
-    somethingLinkedList = head;
-    printf("\n");
-
-    // somethingLinkedList = reverseLinkedList(somethingLinkedList);
-
-    somethingLinkedList = chunkReverseLinkedList(somethingLinkedList, 5);
-    while (somethingLinkedList != NULL)
-    {
-        printf("%d, ", somethingLinkedList->value);
-        somethingLinkedList = somethingLinkedList->next;
-    }
-}
-
-void addNodeNext(int value, Node *node)
+void addNodeNext(int value, Node node)
 {
     if (node->next != NULL)
     {
-        Node *temp = node->next;
+        Node temp = node->next;
         node->next = malloc(sizeof(Node));
         node->next->next = temp;
         node->next->value = value;
@@ -65,25 +17,25 @@ void addNodeNext(int value, Node *node)
     }
 }
 
-void delNextNode(Node *node)
+void delNextNode(Node node)
 {
-    Node *temp = node->next->next;
+    Node temp = node->next->next;
     memset(node->next, 0, sizeof(Node));
     node->next = temp;
 }
 
-Node *createLinkedList(int *array, int size)
+Node createLinkedList(int* array, int size)
 {
     if (size <= 0)
     {
         return NULL;
     }
 
-    Node *head = malloc(sizeof(Node));
+    Node head = malloc(sizeof(Node));
     head->next = NULL;
     head->value = array[0];
 
-    Node *temp = head;
+    Node temp = head;
 
     int i = 1;
     temp = head;
@@ -98,7 +50,7 @@ Node *createLinkedList(int *array, int size)
     return head;
 }
 
-Node *reverseLinkedList(Node *list)
+Node reverseLinkedList(Node list)
 {
 
     if (list == NULL || list->next == NULL) // If 0 or 1 element
@@ -108,15 +60,15 @@ Node *reverseLinkedList(Node *list)
 
     if (list->next->next == NULL)
     { // If 2 elements
-        Node *temp = list->next;
+        Node temp = list->next;
         list->next->next = list;
         list->next = NULL;
         return temp;
     }
 
-    Node *secPrev = list;
-    Node *prev = list->next;
-    Node *current = list->next->next;
+    Node secPrev = list;
+    Node prev = list->next;
+    Node current = list->next->next;
 
     secPrev->next = NULL;
 
@@ -137,19 +89,19 @@ Node *reverseLinkedList(Node *list)
     return secPrev;
 }
 
-Node *chunkReverseLinkedList(Node *list, int chunkSize)
+Node chunkReverseLinkedList(Node list, int chunkSize)
 {
-    Node *lastElementOfCurrentChunk = findElementN(list, chunkSize - 1);
+    Node lastElementOfCurrentChunk = findElementN(list, chunkSize - 1);
 
     if (lastElementOfCurrentChunk == NULL) // If list has less than chunkSize number of elements left
     {
         return reverseLinkedList(list);
     }
 
-    Node *firstElementOfNextChunk = lastElementOfCurrentChunk->next;
+    Node firstElementOfNextChunk = lastElementOfCurrentChunk->next;
 
-    Node *tailOfCurrentChunk = list;
-    Node *headOfCurrentChunk = reverseChunk(list, chunkSize);
+    Node tailOfCurrentChunk = list;
+    Node headOfCurrentChunk = reverseChunk(list, chunkSize);
 
     if (firstElementOfNextChunk == NULL)
     {
@@ -163,10 +115,10 @@ Node *chunkReverseLinkedList(Node *list, int chunkSize)
     return headOfCurrentChunk;
 }
 
-Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new head
+Node reverseChunk(Node list, int chunkSize) // Reverse chunk and return new head
 {
     // If there are less than or equal to chunkSize number of elements in the list, just reverse the list
-    Node *checkerNode = list;
+    Node checkerNode = list;
     int i = 0;
     while (i <= chunkSize)
     {
@@ -179,11 +131,11 @@ Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new he
         i++;
     }
 
-    Node *oldHead = list;
+    Node oldHead = list;
 
-    Node *secPrev = list;
-    Node *prev = list->next;
-    Node *current = list->next->next;
+    Node secPrev = list;
+    Node prev = list->next;
+    Node current = list->next->next;
 
     secPrev->next = NULL;
 
@@ -207,7 +159,7 @@ Node *reverseChunk(Node *list, int chunkSize) // Reverse chunk and return new he
     return secPrev;
 }
 
-Node *findElementN(Node *list, int n)
+Node findElementN(Node list, int n)
 {
 
     if (list == NULL)
