@@ -7,6 +7,16 @@ void swapNodes(Node nodeA, Node nodeB)
     nodeB->value = temp;
 }
 
+int findLengthOfLinkedList(Node list)
+{
+    int length = 0;
+    while (list != NULL)
+    {
+        list = list->next;
+        length++;
+    }
+}
+
 void addNodeNext(int value, Node node)
 {
     if (node->next != NULL)
