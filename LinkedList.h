@@ -18,3 +18,4 @@ Node reverseLinkedList(Node list);
 Node chunkReverseLinkedList(Node list, int chunkSize);
 Node reverseChunk(Node list, int chunkSize);
 Node findElementN(Node list, int index);
+void swapNodes(Node nodeA, Node nodeB);
