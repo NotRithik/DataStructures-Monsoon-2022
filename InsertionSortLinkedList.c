@@ -1,11 +1,13 @@
 #include "LinkedList.h"
 
+Node sortLinkedListWithInsertionSort(Node);
+
 void insertChildOfNodeBBeforeChildOfNodeA(Node nodeA, Node nodeB)
 {
-    Node temp = nodeB->next;
-    nodeB->next = nodeB->next->next;
-    temp->next = nodeA->next;
-    nodeA->next = temp;
+    Node temp = nodeA->next;
+    nodeA->next = nodeA->next->next;
+    temp->next = nodeB->next;
+    nodeB->next = temp;
 }
 
 void main()
@@ -23,17 +25,32 @@ void main()
 
     Node list = createLinkedList(array, n);
 
-    printf("The LinkedList after sorting with selection sort is: ");
-
     Node sortedNode;
     Node head = list;
     Node comparisonNode;
 
-    for (sortedNode = head; sortedNode->next->next != NULL; sortedNode = sortedNode->next)
+    list = sortLinkedListWithInsertionSort(list);
+
+    printf("The LinkedList after sorting with selection sort is: ");
+    printLinkedList(list);
+}
+
+Node sortLinkedListWithInsertionSort(Node list)
+{
+    int sortedSublistPosition, index, size = findLengthOfLinkedList(list);
+    Node sortedSublistNode, indexNode;
+
+    Node tempLinkedListHead = malloc(sizeof(Node));
+    tempLinkedListHead->next = list;
+    list = tempLinkedListHead;
+
+    for (sortedSublistPosition = 0; sortedSublistPosition < size; sortedSublistPosition++)
     {
-        for (comparisonNode = head; comparisonNode->next != sortedNode->next; sortedNode = sortedNode->next)
+        sortedSublistNode = findElementN(list, sortedSublistPosition);
+        for (index = 0; index <= sortedSublistPosition; index++)
         {
-            if (sortedNode->next->next->value > comparisonNode->next->value)
+            indexNode = findElementN(list, index);
+            if (sortedSublistNode->next->value > indexNode->next->value)
             {
                 continue;
             }
@@ -42,14 +59,12 @@ void main()
                 break;
             }
         }
-        insertChildOfNodeBBeforeChildOfNodeA(sortedNode->next, comparisonNode);
+        insertChildOfNodeBBeforeChildOfNodeA(sortedSublistNode, indexNode);
     }
 
-    // insertChildOfNodeBBeforeChildOfNodeA(list, list->next->next->next);
+    list = list->next;
 
-    while (list != NULL)
-    {
-        printf("%d ", list->value);
-        list = list->next;
-    }
+    memset(tempLinkedListHead, 0, sizeof(Node));
+
+    return list;
 }
