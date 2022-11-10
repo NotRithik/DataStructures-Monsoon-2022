@@ -1,5 +1,14 @@
 #include "./LinkedList.h"
 
+void printLinkedList(Node list)
+{
+    while (list != NULL)
+    {
+        printf("%d ", list->value);
+        list = list->next;
+    }
+}
+
 void swapNodes(Node nodeA, Node nodeB)
 {
     int temp = nodeA->value;
@@ -15,6 +24,8 @@ int findLengthOfLinkedList(Node list)
         list = list->next;
         length++;
     }
+
+    return length;
 }
 
 void addNodeNext(int value, Node node)
