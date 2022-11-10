@@ -11,6 +11,7 @@ struct LinkedList
 
 typedef struct LinkedList * Node; // Define type Node
 
+void printLinkedList(Node list);
 void addNodeNext(int value, Node);
 void delNextNode(Node);
 Node createLinkedList(int *array, int size);
