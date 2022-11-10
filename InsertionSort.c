@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <conio.h>
 
+void insertionSort(int *array, int size);
+
 void main()
 {
     printf("Enter the size of the list: ");
@@ -42,7 +44,7 @@ void insertionSort(int *array, int size)
     {
         for (index = 0; index <= sortedSublistPosition; index++)
         {
-            if (array[sortedSublistPosition + 1] > array[index])
+            if (array[sortedSublistPosition] > array[index])
             {
                 continue;
             }
@@ -51,6 +53,6 @@ void insertionSort(int *array, int size)
                 break;
             }
         }
-        moveElemAtXtoPosY(array, sortedSublistPosition + 1, index);
+        moveElemAtXtoPosY(array, sortedSublistPosition, index);
     }
 }
