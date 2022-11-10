@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void siftUpMin(int *heap, int childPositionToSiftUpFrom)
+void siftUpMax(int *heap, int childPositionToSiftUpFrom)
 {
     // Base case, when root is being sifted up
     if (childPositionToSiftUpFrom == 0)
@@ -22,7 +22,7 @@ void siftUpMin(int *heap, int childPositionToSiftUpFrom)
     // From the relation (left child) = (2*parent) + 1
     // and              (right child) = (2*parent) + 2
 
-    if (heap[childPositionToSiftUpFrom] < heap[parentPosition])
+    if (heap[childPositionToSiftUpFrom] > heap[parentPosition])
     {
         // Swap if heap property is violated for the child
         int temp = heap[childPositionToSiftUpFrom];
@@ -43,18 +43,18 @@ void siftUpMin(int *heap, int childPositionToSiftUpFrom)
     {
         // Decrement childPosition by 1, so it points to the left child instead of the
         // right child now, and then do the check again
-        siftUpMin(heap, childPositionToSiftUpFrom - 1);
+
+        siftUpMax(heap, childPositionToSiftUpFrom - 1);
     }
     else
     {
         // Now, siftUp again from parent position
-        siftUpMin(heap, parentPosition);
+        siftUpMax(heap, parentPosition);
     }
 }
 
-void siftDownMin(int *heap, int nodeToSiftDownFrom, int size)
+void siftDownMax(int *heap, int nodeToSiftDownFrom, int size)
 {
-    
     // Base case, when lowest level of children has been reached, exit
     // We know we are at the lowest level when the left child position of the current node
     // is out of bounds
@@ -65,15 +65,15 @@ void siftDownMin(int *heap, int nodeToSiftDownFrom, int size)
         return;
     }
 
-    if (heap[nodeToSiftDownFrom] > heap[childToCompareWith])
+    if (heap[nodeToSiftDownFrom] < heap[childToCompareWith])
     {
-        // Swap if node is greater than child
+        // Swap if node is smaller than child
         int temp = heap[nodeToSiftDownFrom];
         heap[nodeToSiftDownFrom] = heap[childToCompareWith];
         heap[childToCompareWith] = temp;
 
         // Proceed to siftDown from here
-        siftDownMin(heap, childToCompareWith, size);
+        siftDownMax(heap, childToCompareWith, size);
     }
 
     // Check if right child exists
@@ -83,18 +83,18 @@ void siftDownMin(int *heap, int nodeToSiftDownFrom, int size)
         return;
     }
 
-    // Swap if node is greater than child
-    if (heap[nodeToSiftDownFrom] > heap[childToCompareWith])
+    // Swap if node is smaller than child
+    if (heap[nodeToSiftDownFrom] < heap[childToCompareWith])
     {
         int temp = heap[nodeToSiftDownFrom];
         heap[nodeToSiftDownFrom] = heap[childToCompareWith];
         heap[childToCompareWith] = temp;
 
-        siftDownMin(heap, childToCompareWith, size); // Sift down from the right child
+        siftDownMax(heap, childToCompareWith, size); // Sift down from the right child
     }
 }
 
-void minHeapify(int *array, int size)
+void maxHeapify(int *array, int size)
 {
     int currentHeapSize = 0; // The array will be turned into a heap by assuming the heap is of size x
     // and the array is of size (size - x). The first x elements of the array are the heap.
@@ -110,7 +110,7 @@ void minHeapify(int *array, int size)
         // the heap.
 
         // So, we just need to siftUp the last child on each iteration
-        siftUpMin(array, currentHeapSize);
+        siftUpMax(array, currentHeapSize);
     }
 }
 
@@ -128,18 +128,16 @@ void heapSort(int *heap, int size)
         heap[0] = heap[heapSize];
         heap[heapSize] = temp;
 
-        siftDownMin(heap, 0, heapSize);
+        siftDownMax(heap, 0, heapSize);
     }
-
-    
 }
 
 void main()
 {
     int arrayToHeapify[] = {19, 64, 73, 69, 41, 29, 78, 8, 2, 0};
 
-    minHeapify(arrayToHeapify, 10);
-    printf("The minHeap is: ");
+    maxHeapify(arrayToHeapify, 10);
+    printf("The maxHeap is: ");
     for (int i = 0; i < 10; i++)
     {
         printf("%d ", arrayToHeapify[i]);
