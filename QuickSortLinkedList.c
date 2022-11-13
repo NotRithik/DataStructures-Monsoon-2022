@@ -19,10 +19,6 @@ void main()
 
     Node list = createLinkedList(array, n);
 
-    Node sortedNode;
-    Node head = list;
-    Node comparisonNode;
-
     list = quickSortLinkedList(list, 0, findLengthOfLinkedList(list));
 
     printf("The LinkedList after sorting with QuickSort is: ");

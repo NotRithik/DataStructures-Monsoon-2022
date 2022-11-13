@@ -19,10 +19,6 @@ void main()
 
     Node list = createLinkedList(array, n);
 
-    Node sortedNode;
-    Node head = list;
-    Node comparisonNode;
-
     list = sortLinkedListWithInsertionSort(list);
 
     printf("The LinkedList after sorting with insertion sort is: ");
