@@ -11,7 +11,7 @@ BinaryTreeNode createBinaryTreeNode(int value)
 
 BinaryTreeNode createBinaryTreeFromArray(int *array, int size)
 {
-    if (size < 0)
+    if (size < 1)
     {
         return createBinaryTreeNode(NULL);
     }
@@ -24,7 +24,7 @@ BinaryTreeNode createBinaryTreeFromArray(int *array, int size)
         sortedArray[i] = array[i];
     }
 
-    sortedArray = quickSort(sortedArray, 0, size);
+    quickSort(sortedArray, 0, size);
 
     BinaryTreeNode newTree = createBinaryTreeNode(sortedArray[0]);
     BinaryTreeNode indexNode = newTree;
@@ -34,6 +34,8 @@ BinaryTreeNode createBinaryTreeFromArray(int *array, int size)
         indexNode->right = createBinaryTreeNode(sortedArray[i]);
         indexNode = indexNode->right;
     }
+
+    return newTree;
 }
 
 void printBinaryTree(BinaryTreeNode tree)
@@ -45,7 +47,40 @@ void printBinaryTree(BinaryTreeNode tree)
     else // Else, print the smaller elements first, then print the node's value, then print the bigger elements
     {
         printBinaryTree(tree->left);
-        tree->value;
+        printf("%d ", tree->value);
         printBinaryTree(tree->right);
     }
+}
+
+void quickSort(int *array, int startPos, int endPos)
+{
+
+    if (endPos <= startPos)
+    {
+        return;
+    }
+
+    int partition = startPos;
+
+    for (int i = startPos; i < endPos; i++)
+    {
+        if (array[i] < array[partition])
+        {
+            moveElemAtXtoPosY(array, i, partition);
+            partition += 1;
+        }
+    }
+
+    quickSort(array, startPos, partition);
+    quickSort(array, partition + 1, endPos);
+}
+
+void moveElemAtXtoPosY(int *array, int x, int y)
+{
+    int temp = array[x];
+    for (int index = x; index > y; index--)
+    {
+        array[index] = array[index - 1];
+    }
+    array[y] = temp;
 }

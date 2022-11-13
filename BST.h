@@ -8,10 +8,11 @@ struct BinaryTreeNodeStruct
     struct BinaryTreeNodeStruct *right; // Pointer to right child
 };
 
-typedef BinaryTreeNodeStruct *BinaryTreeNode;
+typedef struct BinaryTreeNodeStruct *BinaryTreeNode;
 
 BinaryTreeNode createBinaryTreeNode(int value);
 BinaryTreeNode createBinaryTreeFromArray(int *array, int size);
 void printBinaryTree(BinaryTreeNode tree);
 
-void quickSort(int *array, int startPos, int endPos); // Compile with QuickSort.c or this function won't work
+void quickSort(int *array, int startPos, int endPos);
+void moveElemAtXtoPosY(int *array, int x, int y);
