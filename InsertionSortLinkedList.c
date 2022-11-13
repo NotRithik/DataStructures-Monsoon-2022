@@ -2,13 +2,7 @@
 
 Node sortLinkedListWithInsertionSort(Node);
 
-void insertChildOfNodeBBeforeChildOfNodeA(Node nodeA, Node nodeB)
-{
-    Node temp = nodeA->next;
-    nodeA->next = nodeA->next->next;
-    temp->next = nodeB->next;
-    nodeB->next = temp;
-}
+void insertChildOfNodeBBeforeChildOfNodeA(Node nodeA, Node nodeB);
 
 void main()
 {
@@ -31,7 +25,7 @@ void main()
 
     list = sortLinkedListWithInsertionSort(list);
 
-    printf("The LinkedList after sorting with selection sort is: ");
+    printf("The LinkedList after sorting with insertion sort is: ");
     printLinkedList(list);
 }
 
@@ -67,4 +61,12 @@ Node sortLinkedListWithInsertionSort(Node list)
     memset(tempLinkedListHead, 0, sizeof(Node));
 
     return list;
+}
+
+void insertChildOfNodeBBeforeChildOfNodeA(Node nodeA, Node nodeB)
+{
+    Node temp = nodeA->next;
+    nodeA->next = nodeA->next->next;
+    temp->next = nodeB->next;
+    nodeB->next = temp;
 }
