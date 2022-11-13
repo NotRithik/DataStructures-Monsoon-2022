@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-// Create LinkedList structure
+#include <stdbool.h>// Create LinkedList structure
 struct LinkedList
 {
     int value;
